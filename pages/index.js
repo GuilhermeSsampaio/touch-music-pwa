@@ -31,6 +31,7 @@ const Home = () => {
 
   const handleAudioUpload = async (e) => {
     e.preventDefault();
+
     if (!file) {
       alert("Por favor, selecione um arquivo de áudio.");
       return;
@@ -47,24 +48,28 @@ const Home = () => {
     formData.append("audio", file); // Campo 'audio' deve corresponder ao 'multer.single("audio")'
 
     try {
-      const response = await axios.post(
+      const response = await fetch(
         `/api/upload?name=${encodeURIComponent(fileName)}`,
-        formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          method: "POST",
+          body: formData,
         }
       );
-      console.log("Upload bem-sucedido:", response.data);
+
+      if (!response.ok) {
+        throw new Error(`Erro: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Upload bem-sucedido:", data);
       alert("Áudio enviado com sucesso!");
 
       // Adicionar o novo áudio ao estado
       setAudios((prevAudios) => [
         ...prevAudios,
         {
-          id: response.data.data.id,
-          size: response.data.data.size,
+          id: data.data.id,
+          size: data.data.size,
           created_at: new Date().toISOString(),
         },
       ]);
