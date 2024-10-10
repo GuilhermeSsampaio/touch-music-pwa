@@ -4,6 +4,7 @@ import axios from "axios";
 import Head from "next/head";
 // import Header from "../components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "@/components/header";
 
 const Home = () => {
   const [audios, setAudios] = useState([]);
@@ -123,8 +124,8 @@ const Home = () => {
         <title>Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      {/* 
-      <Header /> */}
+
+      <Header />
 
       {/* Conteúdo da página */}
       <div className="container mt-4">
